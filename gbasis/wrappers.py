@@ -141,7 +141,8 @@ def from_iodata(mol):
 
         # pylint: disable=E1136
         basis.append(
-            IODataShell(angmom, mol.atcoords[shell.icenter], shell.coeffs, shell.exponents)
+            IODataShell(angmom, mol.atcoords[shell.icenter],
+                        shell.coeffs, shell.exponents, icenter=shell.icenter)
         )
 
     return basis, coord_types

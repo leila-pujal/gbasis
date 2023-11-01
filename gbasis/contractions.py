@@ -114,7 +114,7 @@ class GeneralizedContractionShell:
 
     """
 
-    def __init__(self, angmom, coord, coeffs, exps):
+    def __init__(self, angmom, coord, coeffs, exps, icenter=None):
         r"""Initialize a GeneralizedContractionShell instance.
 
         Parameters
@@ -135,14 +135,49 @@ class GeneralizedContractionShell:
             dimension.
         exps : np.ndarray(K,)
             Exponents of the primitives, :math:`\{\alpha_i\}_{i=1}^K`.
-
+        icenter : np.int64 or None (optional)
+            Index for the atomic center for the contraction
         """
         self.angmom = angmom
         self.coord = coord
         self.coeffs = coeffs
         self.exps = exps
         self.assign_norm_cont()
+        self.icenter = icenter
 
+    @property
+    def icenter(self):
+        """Atom center index for the contractions.
+
+       Returns
+        -------
+        icenter : np.int64 or None
+            Index for the corresponding atom center of the contractions.
+
+        """
+        return self._icenter
+
+    @icenter.setter
+    def icenter(self, icenter):
+        """Atom center index for the contractions.
+
+        Parameters
+        ----------
+        icenter : np.int64 or None
+            Index for the corresponding atom center of the contractions.
+
+        Raises
+        ------
+        TypeError
+            If `center` is not a `numpy.int64`, `int`, `float` or `None` type.
+
+        """
+        if isinstance(icenter, int) or isinstance(icenter, float):
+            self._icenter = np.array(icenter, dtype=np.int64)
+        elif isinstance(icenter, np.int64) or isinstance(icenter, None):
+            self._icenter = icenter
+        else:
+            raise TypeError(f"Center should be of integer type. Got {type(self.icenter)}")
     @property
     def coord(self):
         """Coordinate of the center of the contractions.
